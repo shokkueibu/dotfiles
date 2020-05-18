@@ -1,0 +1,8 @@
+rofi.show-icons: true
+rofi.fake-transparency: true
+rofi.fuzzy: true
+rofi.terminal: termite
+rofi.opacity: 75
+rofi.modi: window,run,ssh,drun
+
+rofi.theme: /usr/share/rofi/themes/Arc-Dark.rasi

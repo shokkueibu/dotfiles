@@ -1,0 +1,35 @@
+#!/bin/sh
+
+wid=$1
+class=$2
+instance=$3
+consequences=$4
+
+# if [ "$instance" = fontforge ] ; then
+# 	title=$(xtitle "$wid")
+# 	case "$title" in
+# 		Layers|Tools|Warning)
+# 			echo "focus=off"
+# 			;;
+# 	esac
+# fi
+
+case "$class" in
+	# Lutris|Liferea)
+	# 	eval "$consequences"
+	# 	[ "$state" ] || echo "state=pseudo_tiled"
+	# 	;;
+	Godot)
+		# Godot doesn't update the class and instance immediately
+		sleep 2
+		current_instance=$(wminstance -id $wid)
+
+		if [ "$current_instance" != "Godot_Editor" ] ; then
+			echo "state=floating"
+		fi
+
+esac
+
+
+# printf "1: %s\n2: %s\n3: %s\n4: %s\n5: %s\n6: %s\n\n" "$1" "$2" "$3" "$4" "$(xtitle $wid)" "$real_class" >> "$HOME"/.rules_cmd.log
+

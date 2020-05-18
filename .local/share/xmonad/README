@@ -1,0 +1,8 @@
+This file exists so xmonad doesn't pollute `$HOME` after recompiling.
+
+`xmonad --recompile` will ignore the presence of `$XDG_CONFIG_HOME/xmonad` and 
+use `$HOME/.xmonad`, unless `$XDG_DATA_HOME/xmonad` exists.
+
+Source: 
+ * <https://github.com/xmonad/xmonad/issues/164>
+ * <https://github.com/xmonad/xmonad/issues/148#issuecomment-422563425>

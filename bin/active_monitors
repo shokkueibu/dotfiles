@@ -1,0 +1,4 @@
+#!/bin/sh
+
+xrandr --listactivemonitors | tail -n +2 | awk '{print $4}'
+

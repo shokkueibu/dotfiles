@@ -1,0 +1,10 @@
+#!/bin/sh
+
+output=$(exec xprop -notype \
+  -f WM_CLASS       8s '\t$0\n' \
+  WM_CLASS \
+  ${1+"$@"})
+
+
+echo $(cut -f 2 <<< $output | tr -d '"')
+

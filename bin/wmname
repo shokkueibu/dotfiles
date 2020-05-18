@@ -1,0 +1,10 @@
+#!/bin/sh
+
+output=$(exec xprop -notype \
+  -f WM_NAME        8t '\t$0\t' \
+  WM_NAME \
+  ${1+"$@"})
+
+
+echo $(cut -f 2 <<< "$output" | sed -e 's/^"//' -e 's/"$//')
+
