@@ -3,21 +3,37 @@
 $primary=DVI-D-0
 $secondary=DP-5
 
+
+#
+# Config
+#
+
 # Set up desktops on each active monitor
-/home/shock/bin/bspwm_workspaces.fish &
-
-
-bspc config border_width         2
-bspc config window_gap          12
+$HOME/bin/bspwm_workspaces.fish &
 
 bspc config split_ratio           0.52
 bspc config single_monocle        true
 bspc config borderless_monocle    false
 bspc config gapless_monocle       true
-bspc config focus_follows_pointer true
 bspc config pointer_follows_focus false
 bspc config pointer_follows_monitor true
 bspc config click_to_focus button1
+bspc config focus_follows_pointer true
+
+bspc config focused_border_color \#e47b26
+bspc config active_border_color \#444444
+bspc config normal_border_color \#222222
+
+bspc config top_padding 24
+bspc config border_width         2
+bspc config window_gap          12
+
+bspc config external_rules_command $(dirname $(readlink -f $0))/external_rules
+
+
+#
+# Rules
+#
 
 #bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a mplayer2 state=floating
@@ -34,36 +50,40 @@ bspc rule -a looking-glass-client state=fullscreen
 #bspc rule -a Unity state=floating
 
 # Plasma compatibility
-bspc rule -a plasmashell state=floating manage=off
-bspc rule -a Plasma state=floating border=off
-bspc rule -a plasma-desktop state=floating border=off
-bspc rule -a win7 state=floating border=off
-bspc rule -a krunner state=floating border=off focus=on
-bspc rule -a Kmix state=floating border=off
-bspc rule -a Klipper state=floating border=off
-bspc rule -a Plasmoidviewer state=floating border=off
-# bspc rule -a plasmashell state=floating border=off   # TODO: notifications
-bspc rule -a systemsettings state=floating
+if [[ $XDG_CURRENT_DESKTOP == KDE ]]; then
+    bspc rule -a plasmashell state=floating manage=off
+    bspc rule -a Plasma state=floating border=off
+    bspc rule -a plasma-desktop state=floating border=off
+    bspc rule -a win7 state=floating border=off
+    bspc rule -a krunner state=floating border=off focus=on
+    bspc rule -a Kmix state=floating border=off
+    bspc rule -a Klipper state=floating border=off
+    bspc rule -a Plasmoidviewer state=floating border=off
+    # bspc rule -a plasmashell state=floating border=off   # TODO: notifications
+    bspc rule -a systemsettings state=floating
+fi
 
-bspc config external_rules_command $(dirname $(readlink -f $0))/external_rules
 
-bspc config focused_border_color \#e47b26
-bspc config active_border_color \#444444
-bspc config normal_border_color \#222222
+#
+# Final setup and autostart
+#
 
-bspc config top_padding 24
-
-#xdo below -t $(xdo id -n root) $(xdo id -n polybar)
-
+xrandr --output $primary --primary --output $secondary --right-of $primary
 
 xsetroot -cursor_name left_ptr
 
-sh -c "/home/shock/bin/start_polybar.sh" &
-# sh -c "/home/shock/bin/autostart.sh" &
+
+#
+# Autostart
+#
+
+$HOME/bin/start_polybar.sh &
+#xdo below -t $(xdo id -n root) $(xdo id -n polybar)
+
+# Only run autostart if we are running bspwm without a DE
+# (i.e. Can run KDE with bspwm by using a custom xsession)
+if [[ $DESKTOP_SESSION == *bspwm ]]; then
+    $HOME/bin/autostart.sh &
+fi
 
 sxhkd &
-
-# Can't set this through X11 conf ???
-xrandr --output $primary --primary --output $secondary --right-of $primary
-
-# betterlockscreen -l
